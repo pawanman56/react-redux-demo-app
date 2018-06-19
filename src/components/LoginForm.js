@@ -6,7 +6,8 @@ import {
   Button,
   Card,
   CardSection,
-  Input
+  Input,
+  Spinner
 } from './common/index';
 
 class LoginForm extends Component {
@@ -24,7 +25,7 @@ class LoginForm extends Component {
     this.props.loginUser({ email, password });
   }
 
-  RenderError() {
+  renderError() {
     if (this.props.error) {
       return(
         <View style={{ backgroundColor: '#FFF' }}>
@@ -34,6 +35,18 @@ class LoginForm extends Component {
         </View>
       );
     }
+  }
+
+  renderButton() {
+    if (this.props.loading) {
+      return <Spinner size="large" />;
+    }
+    
+    return (
+      <Button onPress={this.onButtonPress.bind(this)}>
+        Login
+      </Button>
+    );
   }
 
   render() {
@@ -58,12 +71,10 @@ class LoginForm extends Component {
           />
         </CardSection>
 
-        {this.RenderError()}
+        {this.renderError()}
 
         <CardSection>
-          <Button onPress={this.onButtonPress.bind(this)}>
-            Login
-          </Button>
+          {this.renderButton()}
         </CardSection>
       </Card>
     );
@@ -80,12 +91,10 @@ const styles = {
   },
 };
 
-const mapStateToProps = state => {
-  return {
-    email: state.auth.email,
-    password: state.auth.password,
-    error: state.auth.error
-  };
+const mapStateToProps = ({ auth }) => {
+  const { email, password, error, loading } = auth;
+  
+  return { email, password, error, loading };
 };
 
 export default connect(mapStateToProps, {
