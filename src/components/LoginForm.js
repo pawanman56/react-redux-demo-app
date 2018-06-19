@@ -1,4 +1,5 @@
 import React, { Component } from 'react';
+import { View, Text } from 'react-native';
 import { connect } from 'react-redux';
 import { emailChanged, passwordChanged, loginUser } from '../actions/index';
 import {
@@ -23,6 +24,18 @@ class LoginForm extends Component {
     this.props.loginUser({ email, password });
   }
 
+  RenderError() {
+    if (this.props.error) {
+      return(
+        <View style={{ backgroundColor: '#FFF' }}>
+          <Text style={styles.textErrorStyle}>
+            {this.props.error}
+          </Text>
+        </View>
+      );
+    }
+  }
+
   render() {
     return(
       <Card>
@@ -45,6 +58,8 @@ class LoginForm extends Component {
           />
         </CardSection>
 
+        {this.RenderError()}
+
         <CardSection>
           <Button onPress={this.onButtonPress.bind(this)}>
             Login
@@ -55,10 +70,21 @@ class LoginForm extends Component {
   }
 }
 
+const styles = {
+  textErrorStyle: {
+    fontSize: 16,
+    fontWeight: '500',
+    alignSelf: 'center',
+    color: 'red',
+    margin: 7,
+  },
+};
+
 const mapStateToProps = state => {
   return {
     email: state.auth.email,
-    password: state.auth.password
+    password: state.auth.password,
+    error: state.auth.error
   };
 };
 
