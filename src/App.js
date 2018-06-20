@@ -3,8 +3,8 @@ import { Provider } from 'react-redux';
 import { createStore, applyMiddleware } from 'redux';
 import ReduxThunk from 'redux-thunk';
 
+import Router from './Router';
 import reducers from './reducers';
-import LoginForm from './components/LoginForm';
 
 export default class App extends Component {
   componentDidMount() {
@@ -27,7 +27,7 @@ export default class App extends Component {
 
     return (
       <Provider store={store}>
-        <LoginForm />
+        <Router />
       </Provider>
     );
   }
